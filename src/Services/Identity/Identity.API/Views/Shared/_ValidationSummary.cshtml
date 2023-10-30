@@ -1,0 +1,9 @@
+@*заменяем написание в каждой form вот этого <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+на это :*@
+@if (ViewContext.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        <strong>Error</strong>
+        <div asp-validation-summary="All" class="danger"></div>
+    </div>
+}

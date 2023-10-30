@@ -1,0 +1,12 @@
+@model RedirectViewModel
+
+<div class="redirect-page">
+    <div class="lead">
+        <h1>¬ы возвращаетесь в приложение</h1>
+        <p>ѕосле завершени€ работы вы можете закрыть эту вкладку.</p>
+    </div>
+</div>
+
+@*https://www.w3schools.com/tags/tag_meta.asp*@
+<meta http-equiv="refresh" content="0;url=@Model.RedirectUrl" data-url="@Model.RedirectUrl">
+<script src="~/js/signin-redirect.js"></script>

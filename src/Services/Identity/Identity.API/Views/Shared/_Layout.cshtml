@@ -1,0 +1,44 @@
+﻿@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.Identity?.Name!;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сервис авторизации</title>
+    <partial name="Partial/_Styles"/>
+    @await RenderSectionAsync("Styles", false)
+</head>
+    <body>
+  
+        <div class="container-fluid">
+
+            @if (!string.IsNullOrWhiteSpace(name))
+            {
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@name <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+
+        </div>
+
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+
+        <partial name="Partial/_Scripts" />
+        @await RenderSectionAsync("Scripts", false)
+    </body>
+</html>
+

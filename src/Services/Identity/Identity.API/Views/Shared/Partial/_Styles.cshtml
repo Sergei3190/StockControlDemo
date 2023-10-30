@@ -1,0 +1,11 @@
+﻿<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+
+<environment include="development">
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true">
+</environment>
+
+@*режим релиза*@
+<environment exclude="development">
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true">
+</environment>

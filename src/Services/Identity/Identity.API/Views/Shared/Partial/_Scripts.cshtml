@@ -1,0 +1,13 @@
+﻿<script src="~/lib/jquery/jquery.slim.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/lib/jquery-loading-overlay/loadingoverlay.min.js"></script>
+@*подключаем ненавязчивый ajax чтобы сторить запросы с фоновым обменом данных между клиентов и сервером*@
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+<environment include="development">
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
+
+<environment exclude="development">
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>

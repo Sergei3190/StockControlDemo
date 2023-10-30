@@ -1,0 +1,74 @@
+﻿@model RegisterViewModel
+
+<section id="form"><!--form-->
+
+	<partial name="_ValidationSummary" />
+
+	<div class="container">
+		<div class="row top-buffer">
+
+            <div class="col"></div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Регистрация</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <form asp-route="Register">
+                            @*		     можно не указывать, тк для mvc и razorPage у нас добавляется промежуточное ПО для проверки подмены токена,
+                            а для добавление <form> автоматически делает запрос с пометкой POST, что автоматически добавляет форме токен подмены
+                            в виде <input name="__RequestVerificationToken" type="hidden" value="CfDJ8NrAkS ... s2-m9Yw">*@
+                            @*		<form asp-action="Register" asp-antiforgery="true">*@
+                            <input type="hidden" asp-for="ReturnUrl" />
+
+                            <div class="form-group">
+                                <label asp-for="UserName"></label>
+                                <input class="form-control" placeholder="Имя пользователя" asp-for="UserName" autofocus>
+                                <span id="user_sp" asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Email"></label>
+                                <input class="form-control" placeholder="Электронная почта" asp-for="Email">
+                                <span id="email_sp" asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input type="password" class="form-control" placeholder="Пароль" asp-for="Password" autocomplete="off">
+                                <i class="fa-solid fa-eye fa-eye-identity" id="togglePassword"></i>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="PasswordConfirm"></label>
+                                <input type="password" class="form-control" placeholder="Подтверждение пароля" asp-for="PasswordConfirm" autocomplete="off">
+                                <i class="fa-solid fa-eye fa-eye-identity" id="togglePasswordConfirm"></i>
+                                <span asp-validation-for="PasswordConfirm" class="text-danger mb-3"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-primary" name="button" value="register">Зарегистрироваться</button>
+                                <button formnovalidate
+                                        class="btn btn-secondary"
+                                        name="button"
+                                        value="cancel">
+                                    На главную
+                                </button>
+                            </div>
+ 
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+		</div>
+	</div>
+</section><!--/form-->
+
+@*Подключаем скрипт валидации формы на стороне браузера*@
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+}
