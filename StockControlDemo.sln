@@ -126,6 +126,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockControl.API", "src\Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockControl.FunctionalTests", "src\Services\StockControl\tests\StockControl.FunctionalTests\StockControl.FunctionalTests.csproj", "{B9983F09-058B-44C9-9B79-393FA4DF4C30}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Bff.StockControl", "Web.Bff.StockControl", "{AF376FED-DA47-4070-B3D2-65E1CBDB132A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6DD7633B-7BA6-436C-9ACC-E280ACA8D67E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.StockControl.HttpAggregator", "src\ApiGateways\Web.Bff.StockControl\Web.StockControl.HttpAggregator\Web.StockControl.HttpAggregator.csproj", "{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.StockControl.HttpAggregator.FunctionalTests", "src\ApiGateways\Web.Bff.StockControl\tests\Web.StockControl.HttpAggregator.FunctionalTests\Web.StockControl.HttpAggregator.FunctionalTests.csproj", "{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.StockControl.HttpAggregator.UnitTests", "src\ApiGateways\Web.Bff.StockControl\tests\Web.StockControl.HttpAggregator.UnitTests\Web.StockControl.HttpAggregator.UnitTests.csproj", "{6008DE1E-A933-4BE5-8A28-352AF2BA5977}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -284,6 +294,18 @@ Global
 		{B9983F09-058B-44C9-9B79-393FA4DF4C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9983F09-058B-44C9-9B79-393FA4DF4C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9983F09-058B-44C9-9B79-393FA4DF4C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -346,6 +368,11 @@ Global
 		{D72DFD51-B54D-4A08-9563-D5615885AEFD} = {17B094DA-9F6A-4BF5-B4A3-2BB6F974E661}
 		{B389698A-E832-4A9B-8843-5960704002CE} = {17B094DA-9F6A-4BF5-B4A3-2BB6F974E661}
 		{B9983F09-058B-44C9-9B79-393FA4DF4C30} = {8DB3F50C-482D-461C-A9EE-43995B654B85}
+		{AF376FED-DA47-4070-B3D2-65E1CBDB132A} = {38B8D40B-C2A2-4F52-ABA4-4D8E82F98C0D}
+		{6DD7633B-7BA6-436C-9ACC-E280ACA8D67E} = {AF376FED-DA47-4070-B3D2-65E1CBDB132A}
+		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF} = {AF376FED-DA47-4070-B3D2-65E1CBDB132A}
+		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE} = {6DD7633B-7BA6-436C-9ACC-E280ACA8D67E}
+		{6008DE1E-A933-4BE5-8A28-352AF2BA5977} = {6DD7633B-7BA6-436C-9ACC-E280ACA8D67E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {873607C5-513D-41C7-99F4-F70DE5FB1BE2}

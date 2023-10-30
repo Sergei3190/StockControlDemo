@@ -30,7 +30,7 @@ message NoteArrayResponse {
 
 message NoteArrayItemRequest {
 	// Protobuf не поддерживает напр€мую тип Guid , известный UUIDна других платформах. ƒл€ него нет известного типа.
-    // Ћучший подход Ч обрабатывать Guidзначени€ как string пол€,
+    // Ћучший подход Ч обрабатывать Guidзначени€ как stringпол€,
 	string id = 1;
 	string content = 2;
 	bool isFix = 3;
