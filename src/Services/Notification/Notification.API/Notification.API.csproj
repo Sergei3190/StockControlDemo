@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>74b9ec31-0f5a-40d8-9bc5-6915c629a4da</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Service.Common\Service.Common.csproj" />
+    <ProjectReference Include="..\Notification.API.DAL\Notification.API.DAL.csproj" />
+    <ProjectReference Include="..\Notification.API.Models\Notification.API.Models.csproj" />
+  </ItemGroup>
+
+  <!--чтобы проект с функциональными тестами могу обращаться к текущему API-->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Notification.FunctionalTests" />
+  </ItemGroup>
+
+</Project>

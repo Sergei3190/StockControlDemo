@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\Procedure\Notice\NotificationSetting\Default.sql" />
+    <None Remove="Scripts\TableTypes\App\UserInfo\Ids.sql" />
+    <None Remove="Scripts\Triggers\App\UserInfo\InsertUpdate.sql" />
+    <None Remove="Scripts\Triggers\App\UserInfo\Test\InsertUpdateTest.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts\Procedure\Notice\NotificationSetting\Default.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\TableTypes\App\UserInfo\Ids.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Triggers\App\UserInfo\InsertUpdate.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Triggers\App\UserInfo\Test\InsertUpdateTest.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Service.Common\Service.Common.csproj" />
+    <ProjectReference Include="..\Notification.API.Domain\Notification.API.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
