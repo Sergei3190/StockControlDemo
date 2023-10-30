@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-    - "web.stock.control.v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+    - "web.stock.control.api.v*" # Push events to matching v*, i.e. v1.0, v20.15.10
     # запускать данный файл будем если будут запушены изменения в один из указанных ниже путей, аналогично с пул-реквестами
     paths:
     - src/UI/StockControlSPA/**
