@@ -136,6 +136,32 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.StockControl.HttpAggreg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.StockControl.HttpAggregator.UnitTests", "src\ApiGateways\Web.Bff.StockControl\tests\Web.StockControl.HttpAggregator.UnitTests\Web.StockControl.HttpAggregator.UnitTests.csproj", "{6008DE1E-A933-4BE5-8A28-352AF2BA5977}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StockControlSPA", "StockControlSPA", "{36CC82D6-2B01-4DB3-86D5-E29C18AB67CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD}"
+	ProjectSection(SolutionItems) = preProject
+		src\UI\StockControlSPA\Proxy\Dockerfile = src\UI\StockControlSPA\Proxy\Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{75B9141A-53BE-4FB0-AF8E-995CEE1E230E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStockControl.API", "src\UI\StockControlSPA\WebStockControl.API\WebStockControl.API.csproj", "{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStockControl.FunctionalTests", "src\UI\StockControlSPA\tests\WebStockControl.FunctionalTests\WebStockControl.FunctionalTests.csproj", "{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStockControl.UnitTests", "src\UI\StockControlSPA\tests\WebStockControl.UnitTests\WebStockControl.UnitTests.csproj", "{C0551997-8EB8-4C22-8D6E-218908DB43AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cert", "cert", "{A1902641-1D38-4FBB-AD27-0914E8ABC56C}"
+	ProjectSection(SolutionItems) = preProject
+		src\UI\StockControlSPA\Proxy\cert\localhost.crt = src\UI\StockControlSPA\Proxy\cert\localhost.crt
+		src\UI\StockControlSPA\Proxy\cert\localhost.key = src\UI\StockControlSPA\Proxy\cert\localhost.key
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "conf", "conf", "{E2AE47EC-1761-4AAE-B65E-68F6967D62F6}"
+	ProjectSection(SolutionItems) = preProject
+		src\UI\StockControlSPA\Proxy\conf\nginx.conf = src\UI\StockControlSPA\Proxy\conf\nginx.conf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -306,6 +332,18 @@ Global
 		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6008DE1E-A933-4BE5-8A28-352AF2BA5977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -373,6 +411,14 @@ Global
 		{DEFF3472-43CA-47BE-8B16-1C5D11ED5CDF} = {AF376FED-DA47-4070-B3D2-65E1CBDB132A}
 		{34CAAB6B-D2DF-4C9F-9E3F-8F32F9B247EE} = {6DD7633B-7BA6-436C-9ACC-E280ACA8D67E}
 		{6008DE1E-A933-4BE5-8A28-352AF2BA5977} = {6DD7633B-7BA6-436C-9ACC-E280ACA8D67E}
+		{36CC82D6-2B01-4DB3-86D5-E29C18AB67CE} = {07F8C415-6923-470C-A48F-30AB2CC72D1B}
+		{2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD} = {36CC82D6-2B01-4DB3-86D5-E29C18AB67CE}
+		{75B9141A-53BE-4FB0-AF8E-995CEE1E230E} = {36CC82D6-2B01-4DB3-86D5-E29C18AB67CE}
+		{F7C6938A-F8A5-43FC-8BEC-C7E45C29A3C4} = {36CC82D6-2B01-4DB3-86D5-E29C18AB67CE}
+		{9B8C2FE2-FFE0-4A2D-BD4A-7F1F10141F18} = {75B9141A-53BE-4FB0-AF8E-995CEE1E230E}
+		{C0551997-8EB8-4C22-8D6E-218908DB43AD} = {75B9141A-53BE-4FB0-AF8E-995CEE1E230E}
+		{A1902641-1D38-4FBB-AD27-0914E8ABC56C} = {2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD}
+		{E2AE47EC-1761-4AAE-B65E-68F6967D62F6} = {2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {873607C5-513D-41C7-99F4-F70DE5FB1BE2}
