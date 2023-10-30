@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0b6c8259-0a13-452e-9bad-2db812d59b68</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Service.Common\Service.Common.csproj" />
+    <ProjectReference Include="..\PersonalCabinet.API.DAL\PersonalCabinet.API.DAL.csproj" />
+    <ProjectReference Include="..\PersonalCabinet.API.Models\PersonalCabinet.API.Models.csproj" />
+  </ItemGroup>
+
+  <!--чтобы проект с функциональными тестами могу обращаться к текущему API-->
+  <ItemGroup>
+    <InternalsVisibleTo Include="PersonalCabinet.FunctionalTests" />
+  </ItemGroup>
+
+</Project>
