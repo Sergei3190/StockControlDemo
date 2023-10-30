@@ -1,0 +1,60 @@
+name: web-stock-control-api-tests
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "**" ]
+    tags-ignore: "*.v*"
+    # запускать данный файл будем если будут запушены изменения в один из указанных ниже путей, аналогично с пул-реквестами
+    paths:
+    - src/UI/StockControlSPA/**
+    - .github/workflows/web-stock-control-api-tests.yml
+
+  pull_request:
+    branches: [ "**" ]
+    paths:
+    - src/UI/StockControlSPA/**
+    - .github/workflows/web-stock-control-api-tests.yml
+
+env:
+  SERVICE: WebStockControl.API
+  PROJECT_PATH: src/UI/StockControlSPA/WebStockControl.API
+  TESTS_PATH: src/UI/StockControlSPA/tests/WebStockControl.UnitTests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest   
+    steps:    
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+
+    - name: Build WebStockControl.API
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
+
+    - name: Build WebStockControl.UnitTests # если не выполнить сборку, то тесты не пройдут
+      run: dotnet build ${{ env.TESTS_PATH }}
+
+    - name: Test
+      run: dotnet test ${{ env.TESTS_PATH }} --no-build --verbosity normal --logger trx --results-directory "${{ env.SERVICE }}.TestResults"
+
+     # создаём артефакт, в который кладём результат тестов и хранить будем их 30 дней  
+    - name: Download artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-stock-control-api-test-result
+        path: ${{ env.SERVICE }}.TestResults
+        retention-days: 30
+
+  

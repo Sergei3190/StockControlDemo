@@ -1,0 +1,63 @@
+name: note-api-tests
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "**" ]
+    tags-ignore: "*.v*"
+    # запускать данный файл будем если будут запушены изменения в один из указанных ниже путей, аналогично с пул-реквестами
+    paths:
+    - src/BuildingBlocks/**
+    - src/Services/Note/**
+    - .github/workflows/note-api-tests.yml
+
+  pull_request:
+    branches: [ "**" ]
+    paths:
+    - src/BuildingBlocks/**
+    - src/Services/Note/**
+    - .github/workflows/note-api-tests.yml
+
+#установим перменные среды выполнения файла .yml
+env:
+  SERVICE: Note.API
+  PROJECT_PATH: src/Services/Note/Note.API
+  TESTS_PATH: src/Services/Note/tests/Note.UnitTests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest   
+    steps:    
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+
+    - name: Build Note.API
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
+
+    - name: Build Note.UnitTests # если не выполнить сборку, то тесты не пройдут
+      run: dotnet build ${{ env.TESTS_PATH }}
+
+    - name: Test
+      run: dotnet test ${{ env.TESTS_PATH }} --no-build --verbosity normal --logger trx --results-directory "${{ env.SERVICE }}.TestResults"
+
+     # создаём артефакт, в который кладём результат тестов и хранить будем их 30 дней  
+    - name: Download artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: note-api-test-result
+        path: ${{ env.SERVICE }}.TestResults
+        retention-days: 30
+
+  

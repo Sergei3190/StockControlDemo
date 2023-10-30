@@ -1,0 +1,104 @@
+name: web-bff-stock-control-api-release
+
+# будет срабатывать, если выполнить данные команды в терминале:
+# git tag v1.0.0
+# git push origin v1.0.0
+ 
+on:
+  workflow_dispatch:
+  push:
+    tags:
+    - "web.bff.stock.control.v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+    # запускать данный файл будем если будут запушены изменения в один из указанных ниже путей, аналогично с пул-реквестами
+    paths:
+    - src/ApiGateways/Web.Bff.StockControl/**
+    - .github/workflows/web-bff-stock-control-api-release.yml
+
+#установим перменные среды выполнения файла .yml
+env:
+  SERVICE: Web.StockControl.HttpAggregator
+  PROJECT_PATH: src/ApiGateways/Web.Bff.StockControl/Web.StockControl.HttpAggregator
+  TESTS_PATH: src/ApiGateways/Web.Bff.StockControl/tests/Web.StockControl.HttpAggregator.UnitTests
+
+jobs:
+
+  build:
+  
+    strategy:
+      matrix:
+       configuration: [Release]
+
+    runs-on: ubuntu-latest 
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+
+    # сборка без восстановления зависимостей, тк зависимости были востановлены на предыдущем шаге  
+    - name: Build Web.StockControl.HttpAggregator
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
+
+    - name: Build Web.StockControl.HttpAggregator.UnitTests # если не выполнить сборку, то тесты не пройдут
+      run: dotnet build ${{ env.TESTS_PATH }}
+
+    # получаем имя ветки, для которой установлен тэг присваиваем id, чтобы можно было обращаться к данному шагу и работать с его данными 
+    - name: Get branch names
+      id: branch-name
+      uses: tj-actions/branch-names@v7
+
+    # запускаем тесты без сборки, устанавливаем уровень регистрации журнала в normal, говорим что файл будет формата trx и сохранятся в текущей директории 
+    # c именем, которое берёт данные из шага получения имени ветки, в которой есть имя тэга
+    - name: Test
+      run: dotnet test ${{ env.TESTS_PATH }} --no-build --verbosity normal --logger trx --results-directory "${{ env.SERVICE }}.TestResults-${{ steps.branch-name.outputs.tag }}"
+    
+    # создаём артефакт, в который кладём результат тестов и хранить будем их 30 дней  
+    - name: Download artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-bff-stock-control-api-test-result-${{ steps.branch-name.outputs.tag }}
+        path: ${{ env.SERVICE }}.TestResults-${{ steps.branch-name.outputs.tag }}
+        retention-days: 30
+        
+    # создаём архив сайта с папками bin obj, который будет храниться вместе с другими артефактами сборки,
+    # весить будет больше чем артефакты исходники, но зато сразу будет собран и можно запустить сайт
+    - name: Archive service content
+      uses: thedoctor0/zip-release@0.7.1
+      with:
+        type: 'zip'
+        filename: '${{ env.SERVICE }}.zip'
+     
+    # создаём релиз с именем у которого будет имя тэга, говорим что он не черновик и не пререлиз  
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Этот токен предоставляется Actions, вам не нужно создавать свой собственный токен
+      with:
+        tag_name: ${{ steps.branch-name.outputs.tag }}
+        release_name: Release ${{ steps.branch-name.outputs.tag }}
+        prerelease: false
+        draft: false
+     
+    # выгружаем релиз в директорию по умолчанию    
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ env.SERVICE }}.zip
+          asset_name: ${{ env.SERVICE }}-${{ steps.branch-name.outputs.tag }}.zip
+          asset_content_type: application/zip
+        
+    
