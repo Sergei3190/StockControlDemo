@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <!--если не закомментировать данный код, то при переходе на страницу логирования при запуске ТОЛЬКО текущего проекта будет ошибка The returnUrl field is required-->
+    <!--<Nullable>enable</Nullable>-->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>b1035dcf-b561-498f-9773-e737c1aa6ea1</UserSecretsId> <!--создаются автоматически после добавления файла Docker в микросервисе-->
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <!--устарели IdentityServer4, если я верно понял
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />-->
+    <!--для возможности добавить AddAspNetIdentity для использования куков и разрешений-->
+    <!--<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />-->
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.3.5" />
+    <PackageReference Include="Duende.IdentityServer.Storage" Version="6.3.5" />
+    <PackageReference Include="Duende.IdentityServer" Version="6.3.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.11" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
+    <!--нужно для минимизации статических файлов (bundleconfig.json)-->
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="BuildBundlerMinifier2022" Version="2.9.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Service.Common\Service.Common.csproj" />
+    <ProjectReference Include="..\Identity.API.DAL\Identity.API.DAL.csproj" />
+    <ProjectReference Include="..\Identity.API.Models\Identity.API.Models.csproj" />
+  </ItemGroup>
+
+  <!--чтобы проект с функциональными тестами могу обращаться к текущему API-->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Identity.FunctionalTests" />
+  </ItemGroup>
+
+</Project>

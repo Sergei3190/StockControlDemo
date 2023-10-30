@@ -1,0 +1,84 @@
+@model LoginViewModel
+
+<div class="login-page">
+
+    <partial name="_ValidationSummary" />
+
+    <div class="container">
+        <div class="row top-buffer">
+
+            @if (Model.EnableLocalLogin)
+            {
+                <div class="col"></div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Вход</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <form asp-route="Login">
+            @*		     можно не указывать, тк для mvc и razorPage у нас добавляется промежуточное ПО для проверки подмены токена,
+					 а для добавление <form> автоматически делает запрос с пометкой POST, что автоматически добавляет форме токен подмены
+					 в виде <input name="__RequestVerificationToken" type="hidden" value="CfDJ8NrAkS ... s2-m9Yw">*@
+			@*		<form asp-action="Login" asp-antiforgery="true">*@
+                                <input type="hidden" asp-for="ReturnUrl" />
+
+                                <div class="form-group">
+                                    <label asp-for="UserName"></label>
+                                    <input class="form-control" placeholder="Имя пользователя" asp-for="UserName" autofocus>
+                                    <span id="user_sp" asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password"></label>
+                                    <input type="password" class="form-control" placeholder="Пароль" asp-for="Password" autocomplete="off">
+                                    <i class="fa-solid fa-eye fa-eye-identity" id="togglePassword"></i>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                @if (Model.AllowRememberLogin)
+                                {
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="RememberLogin">
+                                            <label class="form-check-label" asp-for="RememberLogin">
+                                                Запомнить меня?
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="d-flex flex-column bd-highlight mb-2">
+                                    <a asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl"><i class="fa fa-user"></i> Регистрация</a>
+                                    <a asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl">
+                                        <i class="fa fa-key"></i> Забыли пароль?
+                                    </a>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-primary" name="button" value="login">Вход</button>
+                                    <button formnovalidate
+                                            class="btn btn-secondary"
+                                            name="button"
+                                            value="cancel">
+                                        Выход
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@*Подключаем скрипт валидации формы на стороне браузера*@
+@section Scripts
+{
+@*    <script type="text/javascript" src="@Url.Content("~/js/site.min.js")"></script>*@
+    <partial name="_ValidationScriptsPartial" />
+}

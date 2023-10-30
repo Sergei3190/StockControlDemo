@@ -1,0 +1,34 @@
+@model LoggedOutViewModel
+
+@{ 
+    // чтобы при рендеринге макета был виден анонимный пользователь, те пользователь, который вышел из системы
+    ViewData["signed-out"] = true;
+}
+
+<div class="logged-out-page">
+    <h1>
+        Logout
+        <small>Теперь вы вышли из системы</small>
+    </h1>
+
+    @if (Model.PostLogoutRedirectUri != null)
+    {
+        <div>
+            Нажмите <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">здесь</a> для возврата в 
+            <span>@Model.ClientName</span> приложение.
+        </div>
+    }
+
+    @if (Model.SignOutIframeUrl != null)
+    {
+        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+    }
+</div>
+
+@section scripts
+{
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+}
