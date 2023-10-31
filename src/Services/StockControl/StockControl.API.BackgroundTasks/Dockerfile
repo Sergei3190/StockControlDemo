@@ -5,16 +5,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/Services/StockControl/StockAvailability.Service/StockControl.API.BackgroundTasks/StockControl.API.BackgroundTasks.csproj", "src/Services/StockControl/StockAvailability.Service/StockControl.API.BackgroundTasks/"]
+COPY ["src/Services/StockControl/StockControl.API.BackgroundTasks/StockControl.API.BackgroundTasks.csproj", "src/Services/StockControl/StockControl.API.BackgroundTasks/"]
 COPY ["src/Services/Common/Service.Common/Service.Common.csproj", "src/Services/Common/Service.Common/"]
 COPY ["src/BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "src/BuildingBlocks/EventBus/EventBusRabbitMQ/"]
 COPY ["src/BuildingBlocks/EventBus/EventBus/EventBus.csproj", "src/BuildingBlocks/EventBus/EventBus/"]
 COPY ["src/BuildingBlocks/EventBus/IntegrationEventLogEF/IntegrationEventLogEF.csproj", "src/BuildingBlocks/EventBus/IntegrationEventLogEF/"]
 COPY ["src/Services/Common/Email.Service/Email.Service.csproj", "src/Services/Common/Email.Service/"]
 COPY ["src/Services/Common/FileParser.Service/FileParser.Service.csproj", "src/Services/Common/FileParser.Service/"]
-RUN dotnet restore "src/Services/StockControl/StockAvailability.Service/StockControl.API.BackgroundTasks/StockControl.API.BackgroundTasks.csproj"
+RUN dotnet restore "src/Services/StockControl/StockControl.API.BackgroundTasks/StockControl.API.BackgroundTasks.csproj"
 COPY . .
-WORKDIR "/src/src/Services/StockControl/StockAvailability.Service/StockControl.API.BackgroundTasks"
+WORKDIR "/src/src/Services/StockControl/StockControl.API.BackgroundTasks"
 RUN dotnet build "StockControl.API.BackgroundTasks.csproj" -c Release -o /app/build
 
 FROM build AS publish

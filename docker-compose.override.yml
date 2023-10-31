@@ -1,0 +1,290 @@
+﻿version: '3.4'
+
+services:
+  seq:
+    environment:
+     - ACCEPT_EULA=Y
+    ports:
+     - "5340:80"
+    volumes:
+      - stock-control-logs:/data
+
+  db:
+    environment:
+      - ACCEPT_EULA=Y #соглашаемся с пользовательскими соглашениями
+      - U=SA #имя пользователя 
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd123 #устанавливаем пароль для входа
+      - MSSQL_PID=Express #указываем к какой бд подключаемся, в данном случаи берём экспресс версию 
+    ports:
+      - "1433:1433" #стандартный порт
+    volumes:
+      - stock-control-db:/var/opt/mssql
+
+  mongo-data:
+    ports:
+      - "27017:27017" #стандартный порт
+    volumes:
+      - stock-control-mongo-data:/data/db
+
+  redis-data:
+    ports:
+      - "6379:6379" #стандартный порт редис
+    environment:
+      - REDIS_ARGS="--requirepass ${REDIS_PASS}" # зададим пароль
+    volumes:
+      - stock-control-redis-data:/data
+
+  rabbitmq:
+    # переопределим пользователя по умолчанию (guest) для подключения к раббит из докера, 
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER} 
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS} 
+    ports:
+      - "15672:15672" #стандартные порты ребита
+      - "5672:5672"
+    volumes:
+      - stock-control-rabbitmq:/var/lib/rabbitmq
+
+  proxy:
+    ports: 
+      - "7100:443"
+    restart: always
+  
+  identity-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443 
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - DB__Type=DockerDb 
+      - SeqAddress=http://seq
+      - SpaClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7100 # так как используем nginx, то указываем здесь порт на котором крутится proxy
+      - WebStockControlAggregatorApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7102
+      - StockControlApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7104
+      - NoteApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7105
+      - NotificationApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7106
+      - PersonalCabinetApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7107
+      - FileStorageApiClient=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7108
+    ports:
+      - "7103:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  identity-api-background-tasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:443
+      - DB__Type=DockerDb 
+      - SeqAddress=http://seq
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS}
+    ports:
+      - "7133:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+ 
+  stock-control-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81 
+      - Kestrel__Endpoints__GRPC__Protocols=Http2
+      - DB__Type=DockerDb 
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS} 
+    ports:
+      - "7104:443"
+      - "6104:81"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+ 
+  stock-control-api-background-tasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://0.0.0.0:443
+      - DB__Type=DockerDb
+      - SeqAddress=http://seq
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS}
+    ports:
+      - "7144:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  note-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81 
+      - Kestrel__Endpoints__GRPC__Protocols=Http2
+      - DB__Type=DockerDb 
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api # для обмена данными внутри сети docker-compose
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103 # для обращения к identity из браузера
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS}
+    ports:
+      - "7105:443"
+      - "6105:81"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  notification-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81 
+      - Kestrel__Endpoints__GRPC__Protocols=Http2
+      - DB__Type=DockerDb 
+      - Cache__Type=DockerСache
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS}
+    ports:
+      - "7106:443"
+      - "6106:81"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+ 
+  personal-cabinet-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - Kestrel__Endpoints__GRPC__Url=http://0.0.0.0:81 
+      - Kestrel__Endpoints__GRPC__Protocols=Http2
+      - DB__Type=DockerDb 
+      - Cache__Type=DockerСache
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103 
+      - EventBus__Connect=DockerHost
+      - EventBus__BusAccess__UserName=${RABBITMQ_USER} 
+      - EventBus__BusAccess__Password=${RABBITMQ_PASS}
+    ports:
+      - "7107:443"
+      - "6107:81"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+ 
+  file-storage-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - DB__Type=DockerDb 
+      - MongoDB__Type=DockerNoSql
+      - Cache__Type=DockerСache
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103
+    ports:
+      - "7108:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  web-bff-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - SeqAddress=http://seq
+      - Identity__Url=http://identity-api
+      - Identity__ExternalUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103
+      - ReverseProxy__Clusters__stockControl__Destinations__destination0__Address=http://stock-control-api
+      - ReverseProxy__Clusters__note__Destinations__destination0__Address=http://note-api
+      - ReverseProxy__Clusters__notification__Destinations__destination0__Address=http://notification-api
+      - ReverseProxy__Clusters__personalCabinet__Destinations__destination0__Address=http://personal-cabinet-api
+      - ReverseProxy__Clusters__fileStorage__Destinations__destination0__Address=http://file-storage-api
+      - HcUrls__StockControlHcUrl=http://stock-control-api/hc
+      - HcUrls__NoteHcUrl=http://note-api/hc
+      - HcUrls__NotificationHcUrl=http://notification-api/hc 
+      - HcUrls__PersonalCabinetHcUrl=http://personal-cabinet-api/hc 
+      - HcUrls__FileStorageHcUrl=http://file-storage-api/hc
+      - GrpcUrls__NoteUrl=http://note-api:81
+    ports:
+      - "7102:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  web-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Endpoints__HTTPS__Url=https://0.0.0.0:443
+      - Kestrel__Endpoints__HTTP__Url=http://0.0.0.0:80
+      - Urls__BffUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7102
+      - Urls__IdentityUrl=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7103
+      - HcUrls__BffHcUrl=http://web-bff-api/hc
+      - HcUrls__IdentityHcUrl=http://identity-api/hc
+    ports:
+      - "7101:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  web-spa:
+    environment:
+      - apiBaseUri=https://${STOCK_CONTROL_EXTERNAL_DNS_NAME_OR_IP}:7101
+      - useHash=true # чтобы прокси в интерфейсе пользователя при перезагрузки страницы срабатывал
+    ports: 
+       - "1171:443"
+
+  web-status:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - HealthChecksUI__HealthChecks__0__Name=WebStockControl API
+      - HealthChecksUI__HealthChecks__0__Uri=http://web-api/hc
+      - HealthChecksUI__HealthChecks__1__Name=Web StockControl HttpAggregator
+      - HealthChecksUI__HealthChecks__1__Uri=http://web-bff-api/hc
+      - HealthChecksUI__HealthChecks__2__Name=Identity API
+      - HealthChecksUI__HealthChecks__2__Uri=http://identity-api/hc
+      - HealthChecksUI__HealthChecks__3__Name=StockControl API
+      - HealthChecksUI__HealthChecks__3__Uri=http://stock-control-api/hc
+      - HealthChecksUI__HealthChecks__4__Name=Note API
+      - HealthChecksUI__HealthChecks__4__Uri=http://note-api/hc
+      - HealthChecksUI__HealthChecks__5__Name=Notification API
+      - HealthChecksUI__HealthChecks__5__Uri=http://notification-api/hc
+      - HealthChecksUI__HealthChecks__6__Name=Personal Cabinet API
+      - HealthChecksUI__HealthChecks__6__Uri=http://personal-cabinet-api/hc
+      - HealthChecksUI__HealthChecks__7__Name=File Storage API
+      - HealthChecksUI__HealthChecks__7__Uri=http://file-storage-api/hc
+    ports: 
+      - "5109:80"
+
+volumes:
+  stock-control-db:
+    external: false
+  stock-control-mongo-data:
+    external: false
+  stock-control-redis-data:
+    external: false
+  stock-control-logs:
+    external: false  
+  stock-control-rabbitmq:
+    external: false
+
+networks:
+  stock-control:
+    driver: bridge  

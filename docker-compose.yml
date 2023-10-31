@@ -1,0 +1,158 @@
+﻿version: '3.4'
+
+services:
+  seq:
+    container_name: StockControlSEQ
+    image: datalust/seq:latest
+
+  db:
+    container_name: StockControlMSSQL
+    hostname: stock-control-mssql
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    
+  mongo-data:
+    container_name: StockControlMONGO
+    image: mongo
+
+  redis-data:
+    container_name: StockControlREDIS
+    image: redis:alpine
+
+  rabbitmq:
+    container_name: StockControlRABBITMQ
+    hostname: stock-control-rabbitmq
+    image: rabbitmq:3-management-alpine
+
+  proxy:
+    container_name: StockControlPROXY
+    image: ${DOCKER_REGISTRY-}proxy
+    build: 
+      context: ./src/UI/StockControlSPA/Proxy
+      dockerfile: Dockerfile
+
+  identity-api:
+    image: ${DOCKER_REGISTRY-}identity-api
+    depends_on:
+      - seq
+      - db 
+      - rabbitmq
+    build:
+      context: ./src/Services/Identity/Identity.API
+      dockerfile: Dockerfile
+
+  identity-api-background-tasks:
+    image: ${DOCKER_REGISTRY-}identity-api-background-tasks
+    depends_on:
+      - seq
+      - db
+      - rabbitmq 
+      - identity-api
+    build:
+      context: ./src/Services/Identity/Identity.API.BackgroundTasks
+      dockerfile: Dockerfile
+
+  file-storage-api:
+    image: ${DOCKER_REGISTRY-}file-storage-api
+    depends_on:
+      - seq
+      - mongo-data
+      - redis-data
+      - identity-api
+    build:
+      context: ./src/Services/FileStorage/FileStorage.API
+      dockerfile: Dockerfile
+
+  note-api:
+    image: ${DOCKER_REGISTRY-}note-api
+    depends_on:
+      - seq
+      - db
+      - rabbitmq
+      - identity-api
+    build:
+      context: ./src/Services/Note/Note.API
+      dockerfile: Dockerfile
+
+  notification-api:
+    image: ${DOCKER_REGISTRY-}notification-api
+    depends_on:
+      - seq
+      - db
+      - rabbitmq
+      - redis-data
+      - identity-api
+    build:
+      context: ./src/Services/Notification/Notification.API
+      dockerfile: Dockerfile
+
+  personal-cabinet-api:
+    image: ${DOCKER_REGISTRY-}personal-cabinet-api
+    depends_on:
+      - seq
+      - db
+      - rabbitmq
+      - redis-data
+      - identity-api
+    build:
+      context: ./src/Services/PersonalCabinet/PersonalCabinet.API
+      dockerfile: Dockerfile
+
+  stock-control-api:
+    image: ${DOCKER_REGISTRY-}stock-control-api
+    depends_on:
+      - seq
+      - db
+      - rabbitmq
+      - identity-api
+    build:
+      context: ./src/Services/StockControl/StockControl.API
+      dockerfile: Dockerfile
+
+  stock-control-api-background-tasks:
+    image: ${DOCKER_REGISTRY-}stock-control-api-background-tasks
+    depends_on:
+      - seq
+      - db
+      - rabbitmq 
+      - stock-control-api
+    build:
+      context: ./src/Services/StockControl/StockControl.API.BackgroundTasks
+      dockerfile: Dockerfile
+
+  web-bff-api:
+    image: ${DOCKER_REGISTRY-}web-bff-api
+    depends_on:
+      - seq
+      - identity-api
+      - file-storage-api
+      - note-api
+      - notification-api
+      - personal-cabinet-api
+      - stock-control-api
+    build:
+      context: ./src/ApiGateways/Web.Bff.StockControl/Web.StockControl.HttpAggregator
+      dockerfile: Dockerfile
+
+  web-api:
+    image: ${DOCKER_REGISTRY-}web-api
+    depends_on:
+      - identity-api 
+    build:
+      context: ./src/UI/StockControlSPA/WebStockControl.API
+      dockerfile: Dockerfile
+
+  web-spa:
+    container_name: StockControlWebSpa
+    image: ${DOCKER_REGISTRY-}web-spa 
+    depends_on:
+      - web-api 
+    build:
+      context: ./src/UI/StockControlSPA/wep-stock-control-spa
+      dockerfile: Dockerfile
+
+  web-status:
+    image: ${DOCKER_REGISTRY-}web-status 
+    build:
+      context: ./src/UI/WebStatus
+      dockerfile: Dockerfile
+

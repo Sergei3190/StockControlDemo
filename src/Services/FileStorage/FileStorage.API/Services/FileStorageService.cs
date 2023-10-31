@@ -24,7 +24,11 @@ public class FileStorageService : IFileStorageService
 		ArgumentNullException.ThrowIfNull(fileInfo, nameof(fileInfo));
 		ArgumentNullException.ThrowIfNull(content, nameof(content));
 
-		var client = new MongoClient(_mongoDbSettings.Local);
+		var connect = _mongoDbSettings.Type.Equals(nameof(_mongoDbSettings.Local), StringComparison.OrdinalIgnoreCase)
+			? _mongoDbSettings.Local
+			: _mongoDbSettings.DockerNoSql;
+
+		var client = new MongoClient(connect);
 		var db = client.GetDatabase(_mongoDbSettings.Catalog);
 
 		// для работы с большими файлами https://metanit.com/sharp/mongodb/1.17.php
@@ -41,7 +45,11 @@ public class FileStorageService : IFileStorageService
 
 	public async Task<FileModel?> DownloadByIdAsync(Guid id)
 	{
-		var client = new MongoClient(_mongoDbSettings.Local);
+		var connect = _mongoDbSettings.Type.Equals(nameof(_mongoDbSettings.Local), StringComparison.OrdinalIgnoreCase)
+			? _mongoDbSettings.Local
+			: _mongoDbSettings.DockerNoSql;
+
+		var client = new MongoClient(connect);
 		var db = client.GetDatabase(_mongoDbSettings.Catalog);
 		var collection = db.GetCollection<StorageFileInfo>(_mongoDbSettings.DefaultCollection);
 
