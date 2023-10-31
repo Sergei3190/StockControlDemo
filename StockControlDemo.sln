@@ -162,6 +162,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "conf", "conf", "{E2AE47EC-1
 		src\UI\StockControlSPA\Proxy\conf\nginx.conf = src\UI\StockControlSPA\Proxy\conf\nginx.conf
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "src\UI\WebStatus\WebStatus.csproj", "{8CA12614-F664-43F0-AB55-08ACC7382858}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -344,6 +346,10 @@ Global
 		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0551997-8EB8-4C22-8D6E-218908DB43AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA12614-F664-43F0-AB55-08ACC7382858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA12614-F664-43F0-AB55-08ACC7382858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA12614-F664-43F0-AB55-08ACC7382858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA12614-F664-43F0-AB55-08ACC7382858}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -419,6 +425,7 @@ Global
 		{C0551997-8EB8-4C22-8D6E-218908DB43AD} = {75B9141A-53BE-4FB0-AF8E-995CEE1E230E}
 		{A1902641-1D38-4FBB-AD27-0914E8ABC56C} = {2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD}
 		{E2AE47EC-1761-4AAE-B65E-68F6967D62F6} = {2A8F59CB-3A6D-4AA3-B006-FFDFB1F8FAFD}
+		{8CA12614-F664-43F0-AB55-08ACC7382858} = {07F8C415-6923-470C-A48F-30AB2CC72D1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {873607C5-513D-41C7-99F4-F70DE5FB1BE2}
