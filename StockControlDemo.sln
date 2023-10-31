@@ -49,6 +49,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B4167BF-FE8F-4F0D-B3A8-C45B1A3A9C1A}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F3A422D7-0067-4EEC-A671-EF265F8D7AEA}"
