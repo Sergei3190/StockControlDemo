@@ -1,0 +1,17 @@
+﻿@model Dictionary<string, string>
+
+@{
+    ViewData["Title"] = "WebStatus Configuration";
+}
+
+<h3>Configuration Values</h3>
+
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Key</td>
+            <td>@item.Value</td>
+        </tr>
+    }
+</table>
