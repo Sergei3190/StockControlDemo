@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-StockControl.API.BackgroundTasks-c2d07a62-538c-4a62-a1e3-33c3cd389693</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..\..\..</DockerfileContext> <!--создаются автоматически после добавления файла Docker в микросервисе-->
+    <DockerfileContext>..\..\..\..</DockerfileContext> <!--создаются автоматически после добавления файла Docker в микросервисе-->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,9 +1,5 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-#FROM mcr.microsoft.com/dotnet/runtime:7.0 AS base
-# ƒокер по умолчанию создал строку выше, но в этом случаи при запуске докера € получал ошибку "The target prosecc exited without raising a CoreCLR started event..",
-# а в кончоли докера было сообщение как в этой ссылке : https://stackoverflow.com/questions/75975253/docker-for-net7-worker-service-running-in-linux-container-fails
-# в итоге пришлось заменить н то, что внизу и ошибка исчезла
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 

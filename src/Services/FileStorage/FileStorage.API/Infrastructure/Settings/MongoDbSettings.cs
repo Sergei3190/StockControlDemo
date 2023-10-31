@@ -8,9 +8,9 @@ public class MongoDbSettings
 
     public string Local { get; set; }
 
-    public string DockerDb { get; set; }
+	public string DockerNoSql { get; set; }
 
-    public string Catalog { get; set; }
+	public string Catalog { get; set; }
 
     public string DefaultCollection { get; set; }
 }
