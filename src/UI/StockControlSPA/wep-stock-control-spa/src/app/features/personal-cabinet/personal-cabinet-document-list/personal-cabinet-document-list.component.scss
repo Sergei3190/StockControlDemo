@@ -1,0 +1,53 @@
+.header {
+    margin-bottom: 10px;
+}
+
+.title {
+    font-weight: 400;
+    font-size: initial;
+}
+
+.upload {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.mat-card {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+    gap:10px; 
+    overflow: hidden;
+
+    .upload-file-link {
+        white-space: nowrap;
+        color: blue;
+    }
+
+    .action-list {
+        display: flex;
+        flex-direction: row;
+        margin-left: auto;
+        gap: 10px;
+    }
+}
+
+.mat-card:hover {
+    background-color: #d8d8d8;
+}
+
+.no-content {
+    display: flex;
+    flex-direction: row;
+    font-style: oblique;
+}
+
+.pin-blue {
+    color: blue;
+}
+
+.pin-blue :hover{
+    cursor: pointer;
+    color: blue;
+}

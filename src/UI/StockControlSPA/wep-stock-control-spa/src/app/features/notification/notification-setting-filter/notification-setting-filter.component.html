@@ -1,0 +1,30 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content [formGroup]="form">
+    
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label class="mat-label">Выберите тип уведомления</mat-label>
+            <input type="text" matInput [matAutocomplete]="auto" formControlName="notificationTypeName" (click)="loadSelectItems()">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <ng-container *ngIf="items && items.length > 0 && !isNoContent">
+                    <mat-option *ngFor="let item of items" [value]="item.name">
+                        {{item.name}}
+                    </mat-option>
+                </ng-container>
+                <ng-container *ngIf="isNoContent">
+                    <mat-option [value]="null" disabled>
+                        Данные не найдены..
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+
+        </mat-form-field>
+    </div>
+        
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="canDisabledForm" color="primary" (click)="save()">Применить</button>
+</mat-dialog-actions>

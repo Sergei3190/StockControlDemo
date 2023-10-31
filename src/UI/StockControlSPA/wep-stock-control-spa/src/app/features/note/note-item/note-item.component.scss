@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-size: 20px;
+    height: 25px;
+    margin-bottom: 8px;
+
+    .content {
+        flex: 1;
+        font-size: initial;
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+    }
+
+    .pin-blue {
+        color: blue;
+    }
+    
+    .pin-blue, .close :hover{
+        cursor: pointer;
+    }
+}
+
+mat-form-field {
+    width: 100%;
+    font-size: var(--content-font-size);
+}

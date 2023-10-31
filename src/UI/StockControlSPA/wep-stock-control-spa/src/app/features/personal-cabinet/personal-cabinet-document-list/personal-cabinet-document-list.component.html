@@ -1,0 +1,63 @@
+<div class="header">
+    <span class="title">Документы</span>
+    <span 
+        class="upload"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="fileUpload.click()"
+        (keydown)="fileUpload.click()"
+        matTooltip="Добавить документ" matTooltipPosition="right">
+        <i class="bi bi-plus-lg"></i>
+    </span>
+    <input type="file" accept="*" [multiple]="false" (change)="onFileChange($event)" #fileUpload hidden>
+</div>
+<ng-container *ngIf="!loadingInfo.isNoContent && items.length === 0">
+    <span class="no-content">Загруженные документы отсутствуют.. :-0</span>
+</ng-container>  
+<ng-container *ngIf="!loadingInfo.isNoContent && items.length > 0">
+    <mat-card *ngFor="let item of items" (mouseenter)="onMouseEnter(item)" (mouseleave)="onMouseLeave(item)" class="mat-card">
+        <span 
+            class="upload-file-link"
+            role="button"
+            tabindex="0"
+            aria-pressed="false"
+            (click)="downloadFile(item.file)"
+            (keydown)="downloadFile(item.file)">{{item.file.fileName}}</span>
+        <div class="action-list">
+            <ng-container *ngIf="item.isHover">
+                <div class="action-list">
+                    <span 
+                        class="pin-blue" 
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false"
+                        (click)="fileUpload.click()"
+                        (keydown)="fileUpload.click()"
+                        matTooltip="Заменить" matTooltipPosition="above">
+                        <i class="bi bi-three-dots"></i>
+                    </span>
+                    <span 
+                        class="pin-blue" 
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false"
+                        (click)="deleteDocument(item.id)"
+                        (keydown)="deleteDocument(item.id)"
+                        matTooltip="Удалить" matTooltipPosition="above">
+                        <i class="bi bi-trash-fill"></i>
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+    </mat-card>
+</ng-container>  
+<ng-container *ngIf="loadingInfo.isNoContent">
+    <app-page-no-content [load]="reloadPage"></app-page-no-content>
+</ng-container>
+<ng-container *ngIf="loadingInfo.isNotFound">
+    <app-page-not-found [load]="reloadPage"></app-page-not-found>
+</ng-container>
+<ng-container *ngIf="loadingInfo.isUnauthorized">
+    <app-page-unauthorized></app-page-unauthorized>
+</ng-container>

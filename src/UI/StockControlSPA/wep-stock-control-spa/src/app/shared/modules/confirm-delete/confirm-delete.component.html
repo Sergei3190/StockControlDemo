@@ -1,0 +1,10 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content>
+    {{content}}        
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button (click)="close()">Нет</button>
+    <button mat-raised-button color="primary" (click)="save()">Да</button>
+</mat-dialog-actions>

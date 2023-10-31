@@ -1,0 +1,6 @@
+<div>
+    <app-sidebar [tabs]="sideBarItems" [userName]="userName" (signIn)="onLogin()" (signOut)="onLogout()"></app-sidebar>
+</div>
+<div>
+    <router-outlet></router-outlet>
+</div>

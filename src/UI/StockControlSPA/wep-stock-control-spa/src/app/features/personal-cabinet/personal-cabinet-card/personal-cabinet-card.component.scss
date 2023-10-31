@@ -1,0 +1,36 @@
+.title {
+    margin-top: 5px;
+    font-weight: 500;
+    font-size: initial;
+}
+
+.filters {
+    display: flex;
+    
+    button {
+        width: 40px;
+        margin-left: 10px;
+        height: var(--header-input-height);
+    }
+}
+
+.person-card {
+    display: grid;
+    gap: 23px;
+    grid-template-columns: 172px 1fr;
+    grid-template-areas:
+        "ph mi mi"
+        "d d d ";
+
+    .person-card-photo {
+        grid-area: ph;
+    }
+
+    .person-card-main-info {
+        grid-area: mi;
+    }
+
+    .person-card-document {
+        grid-area: d;
+    }
+}

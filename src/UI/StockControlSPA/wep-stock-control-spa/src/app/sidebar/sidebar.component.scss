@@ -1,0 +1,43 @@
+@import 'src/variables';
+
+.sb-wrapping{
+  position: relative;
+  background-color:var(--navbar-background-color);
+  display: flex;
+  flex-direction: column;
+  width: var(--navbar-width); // ограничения по ширине
+  height: 100vh; // растягиваем элемент во всю высоту
+  min-height: var(--navbar-min-height);
+  padding: var(--content-padding);
+  font-size: $font-size-s;
+  overflow: hidden;
+
+  .root-link {
+    margin-top: 8px;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: white;
+    font-size: $font-size-s;
+  }
+
+  .sb-tab {
+    display: flex;
+    padding: var(--content-padding);
+
+    span {
+      position: absolute;
+      left: 30%;
+    }
+  }
+
+  li:hover {
+    border-radius: 6px;
+    background-color: #757678;
+    margin-left: 5px;
+    span {
+      margin-left: 5px;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<div class="content-side-panel">
+    <div class="header">
+        <div class="header-content">
+            <span class="title">{{userName}}</span>
+
+            <div class="filters">
+                <app-search-input [canClear]="canClearSearch" (searchChange)="onChangedSearch($event)"></app-search-input>
+
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="!loadingInfo.isResultFilter" 
+                    (click)="clearFilter()" matTooltip="Очистить результат фильтрации">
+                    <i class="bi bi-folder-symlink-fill"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="header-last-item"> 
+            <ng-container *ngTemplateOutlet="loadingInfo.isLoading ? progressBar : headerLastItem"></ng-container>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="person-card">
+            <ng-container *ngIf="personPhoto">
+                <div class="person-card-photo">
+                    <app-personal-cabinet-photo [model]="personPhoto"></app-personal-cabinet-photo>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="personMainInfo">
+                <div class="person-card-main-info">
+                    <app-personal-cabinet-main-info [model]="personMainInfo"></app-personal-cabinet-main-info>
+                </div>            
+            </ng-container>
+            <ng-container *ngIf="personDocuments">
+                <div class="person-card-document">
+                    <app-personal-cabinet-document-list 
+                        [items]="personDocuments" 
+                        [cardId]="filter.cardId"
+                        [loadingInfo]="loadingInfo"
+                        [reloadPage]="reload"
+                        (deleted)="onDeleteDocument($event)"
+                        (loading)="onLoadingDocument($event)"></app-personal-cabinet-document-list>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    
+   <div class="footer">
+      <hr/>
+      <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+   </div>
+</div>
+
+<ng-template #progressBar>
+    <mat-progress-bar class="mt-1" mode="indeterminate"></mat-progress-bar>
+</ng-template>
+<ng-template #headerLastItem>
+    <hr class="mt-1">
+</ng-template>

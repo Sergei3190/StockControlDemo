@@ -1,0 +1,31 @@
+<form [formGroup]="form">
+
+    <div class="info-row">
+        <div class="was-validated info-row-fio">
+            <input type="text" formControlName="lastName" class="form-control" placeholder="Введите фамилию" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("lastName")}}</span> 
+        </div>  
+        <div class="was-validated info-row-fio">
+            <input type="text" formControlName="firstName" class="form-control" placeholder="Введите имя" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("firstName")}}</span> 
+        </div>
+        <div class="info-row-fio">
+            <input type="text" formControlName="middleName" class="form-control" placeholder="Введите отчество">
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="info-row-age-out">
+            <input type="number" formControlName="age" class="form-control info-row-age" placeholder="Введите возраст">
+        </div>
+        <div class="info-row-birthday">
+            <input 
+                type="text" 
+                formControlName="birthday" 
+                class="form-control"
+                placeholder="Выберите дату рождения" 
+                onfocus="(this.type='date')"
+                onblur="(this.type='text')">
+        </div>
+    </div>        
+</form>

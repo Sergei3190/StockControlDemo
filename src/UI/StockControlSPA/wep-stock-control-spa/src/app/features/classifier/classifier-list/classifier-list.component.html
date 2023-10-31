@@ -1,0 +1,62 @@
+<div class="content-side-panel">
+    <div class="header">
+        <div class="header-content">
+            <span class="title">Справочники</span>
+
+            <div class="filters">
+                <app-search-input [canClear]="canClearSearch" (searchChange)="onChangedSearch($event)"></app-search-input>
+
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="!loadingInfo.isResultFilter" 
+                    (click)="clearFilter()" matTooltip="Очистить результат фильтрации">
+                    <i class="bi bi-folder-symlink-fill"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="header-last-item"> 
+            <ng-container *ngTemplateOutlet="loadingInfo.isLoading ? progressBar : headerLastItem"></ng-container>
+        </div>
+    </div>
+
+    <div class="body">
+        <ng-container *ngIf="!loadingInfo.isNoContent && items?.length === 0">
+            <span class="no-content">Справочники отсутствуют.. :-0</span>
+        </ng-container>  
+        <ng-container *ngIf="!loadingInfo.isNoContent && items && items.length > 0">
+            <mat-card *ngFor="let item of items">
+                <span 
+                    class="classifier" 
+                    role="button"
+                    tabindex="0"
+                    aria-pressed="false"
+                    (click)="fell(item.path)"
+                    (keydown)="fell(item.path)"
+                    matTooltip="Перейти в справочник" matTooltipPosition="right">
+                    {{item.name}}
+            </span>
+            </mat-card>
+        </ng-container>    
+        <ng-container *ngIf="loadingInfo.isNoContent">
+            <app-page-no-content [load]="reload"></app-page-no-content>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isNotFound">
+            <app-page-not-found [load]="reload"></app-page-not-found>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isUnauthorized">
+            <app-page-unauthorized></app-page-unauthorized>
+        </ng-container>
+    </div>
+    
+   <div class="footer">
+      <hr/>
+      <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+   </div>
+</div>
+
+<ng-template #progressBar>
+    <mat-progress-bar class="mt-1" mode="indeterminate"></mat-progress-bar>
+</ng-template>
+<ng-template #headerLastItem>
+    <hr class="mt-1">
+</ng-template>

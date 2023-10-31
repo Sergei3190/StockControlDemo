@@ -1,0 +1,71 @@
+<div class="header">
+    <span class="content" mat-dialog-title>{{title}}</span>
+    <span 
+        class="close"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="close()" 
+        (keydown)="close()" 
+        matTooltip="Закрыть" matTooltipPosition="left">
+        <i class="bi bi-box-arrow-in-right"></i>
+    </span>
+</div>
+
+<form [formGroup]="form">
+    <div formGroupName="party">
+        <div class="info-row-fio mb-2">
+            <label for="number">Номер партии: </label>
+            <input id="number" type="text" formControlName="number" class="form-control">
+        </div>   
+        <div class="info-row-fio mb-2">
+            <label for="extensionNumber">Номер партии склада хранения: </label>
+            <input id="extensionNumber" type="text" formControlName="extensionNumber" class="form-control">
+        </div> 
+        <div class="info-row-fio mb-2">
+            <label for="createDate">Дата изготовления партии: </label>
+            <input 
+                id="createDate" 
+                type="date" 
+                formControlName="createDate" 
+                class="form-control"
+                [value]="form.get('party')?.get('createDate')?.value | date: 'dd.MM.yyyy'">
+        </div> 
+        <div class="info-row-fio mb-2">
+            <label for="createTime">Время изготовления партии: </label>
+            <input 
+                id="createTime"
+                type="time" 
+                formControlName="createTime"
+                class="form-control"
+                >
+        </div> 
+    </div>  
+
+    <div formGroupName="warehouse">
+        <div class="info-row-fio mb-2">
+            <label for="name">Склад: </label>
+            <input id="name" type="text" formControlName="name" class="form-control">
+        </div>  
+    </div>
+
+    <div formGroupName="organization">
+        <div class="info-row-fio mb-2">
+            <label for="name">Организация: </label>
+            <input id="name" type="text" formControlName="name" class="form-control">
+        </div>  
+    </div>
+
+    <div class="info-row-fio mb-2">
+        <label for="price">Цена: </label>
+        <input id="price" type="text" formControlName="price" class="form-control">
+    </div>  
+    <div class="info-row-fio mb-2">
+        <label for="quantity">Количество: </label>
+        <input id="quantity" type="text" formControlName="quantity" class="form-control">
+    </div>  
+    <div class="info-row-fio mb-2">
+        <label for="totalPrice">Итоговая цена: </label>
+        <input id="totalPrice" type="text" formControlName="totalPrice" class="form-control">
+    </div>  
+</form>

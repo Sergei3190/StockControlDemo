@@ -1,0 +1,17 @@
+.header {
+    margin-top: 6px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-size: 20px;
+    height: 25px;
+
+    .content {
+        flex: 1;
+        font-size: initial;
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+    }
+}

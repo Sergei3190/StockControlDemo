@@ -1,0 +1,23 @@
+.form-item{
+    width: 100%;
+    font-size: var(--content-font-size);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    input {
+        font-size: var(--content-font-size);
+        overflow: hidden;
+    }
+}
+
+.mat-option {
+    font-size: var(--content-font-size);
+    min-height: 32px !important;
+
+    .photo-spinner {
+        display: flex;
+        justify-content: center;
+        margin-left: calc(100vh/4.3);
+    }
+}

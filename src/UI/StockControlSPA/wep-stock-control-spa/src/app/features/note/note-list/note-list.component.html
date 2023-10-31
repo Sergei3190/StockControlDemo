@@ -1,0 +1,139 @@
+<div class="content-side-panel">
+    <div class="header">
+        <div class="header-content">
+
+            <div class="note-input-btn">
+                <input type="text" class="form-control" placeholder="Введите текст заметки" maxlength="120"
+                    [(ngModel)]="content" 
+                    (ngModelChange)="onChangedContent($event)">
+                <button class="btn btn-primary btn-sm" type="button" (click)="addNote()" matTooltip="Добавить заметку" matTooltipPosition="right">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+            </div>
+
+            <div class="filters">
+                <app-search-input [canClear]="canClearSearch" (searchChange)="onChangedSearch($event)"></app-search-input>
+
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="!loadingInfo.isResultFilter" 
+                    (click)="clearFilter()" matTooltip="Очистить результат фильтрации">
+                    <i class="bi bi-folder-symlink-fill"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm" type="button" (click)="openFilter()" matTooltip="Фильтр">
+                    <i class="bi bi-funnel"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="header-last-item"> 
+            <ng-container *ngTemplateOutlet="loadingInfo.isLoading ? progressBar : headerLastItem"></ng-container>
+        </div>
+    </div>
+
+    <div class="body" #container app-side-drawer-container>
+        <ng-container *ngIf="!loadingInfo.isNoContent && fixCtx?.notes?.length === 0 && unFixCtx?.notes?.length === 0">
+            <span class="no-content">Заметки отсутствуют.. :-0</span>
+        </ng-container>  
+        <ng-container *ngIf="!loadingInfo.isNoContent && fixCtx && unFixCtx && ((fixCtx.notes.length > 0) || (unFixCtx.notes.length > 0)) ">
+            <div id="fixItems"
+                cdkDropList 
+                [cdkDropListData]="fixCtx.notes" 
+                cdkDropListConnectedTo="unFixCtx.items"
+                (cdkDropListDropped)="drop($event)"
+                [cdkDropListEnterPredicate]="canMoveToUnFix">          
+                <ng-container *ngTemplateOutlet="rows;context:fixCtx" cdkDrag ></ng-container> 
+            </div>  
+            <div id="unFixItems"
+                cdkDropList 
+                [cdkDropListData]="unFixCtx.notes" 
+                cdkDropListConnectedTo="fixCtx.items"
+                (cdkDropListDropped)="drop($event)"
+                [cdkDropListEnterPredicate]="canMoveToFix">          
+                <ng-container *ngTemplateOutlet="rows;context:unFixCtx" cdkDrag ></ng-container> 
+            </div> 
+        </ng-container>      
+        <ng-container *ngIf="loadingInfo.isNoContent">
+            <app-page-no-content [load]="reload"></app-page-no-content>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isNotFound">
+            <app-page-not-found [load]="reload"></app-page-not-found>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isUnauthorized">
+            <app-page-unauthorized></app-page-unauthorized>
+        </ng-container>
+    </div>
+    
+   <div class="footer">
+      <hr/>
+      <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+   </div>
+</div>
+
+<ng-template #rows let-notes="notes" let-isFix="isFix">
+    <div cdkDropList (cdkDropListDropped)="templateDrop($event, isFix)">
+        <mat-card *ngFor="let note of notes" (mouseenter)="onMouseEnter(note)" (mouseleave)="onMouseLeave(note)" cdkDrag cdkDragLockAxis="y" [cdkDragStartDelay]="100">
+            <ng-container *ngTemplateOutlet="note.isFix ? onFix : offFix;context:{note: note}"></ng-container>
+            <ng-container *ngIf="!!note.executionDate">
+                <span>Дата выполнения: {{note.executionDate}}</span>             
+            </ng-container>
+            <span>{{note.content}}</span> 
+            <ng-container *ngIf="note.isHover">
+                <div class="action-list">
+                    <span 
+                        class="pin-blue" 
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false"
+                        (click)="editNote(note.id)" 
+                        (keydown)="editNote(note.id)" 
+                        matTooltip="Редактировать" matTooltipPosition="above">
+                        <i class="bi bi-three-dots"></i>
+                    </span>
+                    <span 
+                        class="pin-blue" 
+                        role="button"
+                        tabindex="0"
+                        aria-pressed="false"
+                        (click)="deleteNote(note.id)"
+                        (keydown)="deleteNote(note.id)"
+                        matTooltip="Удалить" matTooltipPosition="above">
+                        <i class="bi bi-trash-fill"></i>
+                    </span>
+                </div>
+            </ng-container>
+        </mat-card>
+    </div>
+</ng-template>
+
+<ng-template #onFix let-note="note">
+    <span 
+        class="pin-blue"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="changePinning(note)" 
+        (keydown)="changePinning(note)"
+        matTooltip="Открепить" matTooltipPosition="above">
+        <i class="bi bi-pin-fill"></i>
+    </span>
+</ng-template>
+<ng-template #offFix let-note="note">
+    <span 
+        class="pin-blue" 
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="changePinning(note)" 
+        (keydown)="changePinning(note)"
+        matTooltip="Закрепить" matTooltipPosition="above">
+        <i class="bi bi-pin-angle-fill"></i>
+    </span>
+</ng-template>
+
+<ng-template #progressBar>
+    <mat-progress-bar class="mt-1" mode="indeterminate"></mat-progress-bar>
+</ng-template>
+<ng-template #headerLastItem>
+    <hr class="mt-1">
+</ng-template>

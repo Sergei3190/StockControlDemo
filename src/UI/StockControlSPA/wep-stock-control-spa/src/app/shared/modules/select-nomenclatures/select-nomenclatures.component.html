@@ -1,0 +1,26 @@
+<div class="form-item" [ngClass]="{'was-validated': isRequired}">
+    <label for="name">Номенклатура: </label>
+    <input 
+        class="form-control" 
+        [disabled]="disabled"
+        [(ngModel)]="name" 
+        (ngModelChange)="onChangedInput($event)"
+        type="text" 
+        matInput
+        [matAutocomplete]="auto" 
+        (click)="loadSelectItems()"
+        placeholder="Выберите номенклатуру" [required]="isRequired">
+    <span class="invalid-feedback" *ngIf="!name">{{getErrorMessage()}}</span> 
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <ng-container *ngIf="items && items.length > 0 && !isNoContent">
+            <mat-option *ngFor="let item of items" class="mat-option" [value]="item.name">
+                {{ item.name }}
+            </mat-option>
+        </ng-container>
+        <ng-container *ngIf="isNoContent" >
+            <mat-option [value]="null" class="mat-option" disabled>
+                Данные не найдены..
+            </mat-option>
+        </ng-container>
+    </mat-autocomplete>
+</div> 

@@ -1,0 +1,126 @@
+<div class="content-side-panel">
+    <div class="header">
+        <div class="header-content">
+            <!-- по умолчанию остатки будут на текущий день, но в реальном приложении надо реализовать фильтрацию по датам -->
+            <span class="title">Остатки</span>
+
+            <div class="filters">
+                <app-search-input [canClear]="canClearSearch" (searchChange)="onChangedSearch($event)"></app-search-input>
+
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="!loadingInfo.isResultFilter" 
+                    (click)="clearFilter()" matTooltip="Очистить результат фильтрации">
+                    <i class="bi bi-folder-symlink-fill"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm" type="button" (click)="openFilter()" matTooltip="Фильтр">
+                    <i class="bi bi-funnel"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="header-last-item"> 
+            <ng-container *ngTemplateOutlet="loadingInfo.isLoading ? progressBar : headerLastItem"></ng-container>
+        </div>
+    </div>
+
+    <div class="body" #container app-side-drawer-container>
+        <ng-container *ngIf="!loadingInfo.isNoContent && paginationInfo?.items === 0">
+            <span class="no-content">Остатки отсутствуют.. :-0</span>
+        </ng-container>  
+        <ng-container *ngIf="!loadingInfo.isNoContent && paginationInfo.items > 0 && dataSource.data.length > 0">
+            <div class="sc-table">
+                <table 
+                    mat-table [dataSource]="dataSource" 
+                    matSort (matSortChange)="announceSortChange($event)">
+
+                <ng-container matColumnDef="nomenclature">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="nomenclature">
+                    Номенклатура
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.nomenclature.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="party">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="party">
+                    Партия
+                    </th>
+                    <td mat-cell *matCellDef="let item">
+                        <div class="party">      
+                            <span class="party-discription">№ </span>
+                            <span class="party-value">{{item.party.number}} / {{item.party.extensionNumber}} </span>
+                        </div>
+                        <div class="party">      
+                            <span class="party-discription">Дата изготовления: </span>
+                            <span class="party-value">{{item.party.createDate | date: 'dd.MM.yyyy'}} </span>
+                        </div>
+                        <div class="party">
+                            <span class="party-discription">Время изготовления: </span>
+                            <span class="party-value">{{item.party.createTime}} </span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="warehouse">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="warehouse">
+                    Склад хранения
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.warehouse.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="organization">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="organization">
+                    Организация
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.organization.name}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="price">
+                    Цена
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.price}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="quantity">
+                    Количество
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalPrice">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="totalPrice">
+                    Итоговая цена
+                    </th>
+                    <td mat-cell *matCellDef="let item"> {{item.totalPrice}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="table-header"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openItem(row.id)" class="table-row"></tr>
+            </table>
+            </div>
+        </ng-container> 
+        <ng-container *ngIf="loadingInfo.isNoContent">
+            <app-page-no-content [load]="reload"></app-page-no-content>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isNotFound">
+            <app-page-not-found [load]="reload"></app-page-not-found>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isUnauthorized">
+            <app-page-unauthorized></app-page-unauthorized>
+        </ng-container>   
+    </div>
+    
+    <div class="footer">
+        <hr/>
+        <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+    </div>
+</div>
+
+<ng-template #progressBar>
+    <mat-progress-bar class="mt-1" mode="indeterminate"></mat-progress-bar>
+</ng-template>
+<ng-template #headerLastItem>
+    <hr class="mt-1">
+</ng-template>

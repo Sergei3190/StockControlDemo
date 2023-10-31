@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row flex-nowrap"> 
+        <div class="sb-wrapping">
+            <a href="/" class="root-link">
+                <span class="fs-5 d-none d-sm-inline">Складской учет</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item" *ngFor="let tab of tabs">
+                    <a  
+                        class="sb-tab"
+                        [routerLink]="tab.href" 
+                        routerLinkActive 
+                        #tabSidBar = "routerLinkActive"
+                        [ngClass]="{ 'nav-link active': tabSidBar.isActive }"
+                        [queryParamsHandling]="queryParamsHandling">
+                        <i class="{{tab.iconClass}}"></i> 
+                        <span>{{tab.label}}</span>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown pb-2">
+                <a href="#" class="d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                    <span class="d-none d-sm-inline mx-1">{{ userName }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark shadow">
+                    <li>
+                        <a 
+                            class="dropdown-item" 
+                            role="button"
+                            tabindex="0"
+                            aria-pressed="false"
+                            (click)="login()"
+                            (keydown)="login()">Войти в аккаунт</a>
+                    </li>
+                    <li>
+                        <a 
+                            class="dropdown-item" 
+                            role="button"
+                            tabindex="0"
+                            aria-pressed="false"
+                            (click)="logout()"
+                            (keydown)="logout()">Выйти из аккаунта</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

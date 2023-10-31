@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="photo">
+        <ng-container *ngIf="isLoading">
+            <div class="photo-spinner">
+                <span class="spinner-grow text-primary" role="status"></span>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!isLoading">
+            <ng-container *ngTemplateOutlet="!model?.file ? empty : photo;context:{content: model?.file?.content}"></ng-container>
+        </ng-container>
+    </div>
+</div>
+<div class="mt-2">
+    <button class="btn btn-primary btn-sm" (click)="fileUpload.click()">Загрузить фото</button>
+</div>
+
+<input type="file" accept=".jpg" [multiple]="false" (change)="onFileChange($event)" #fileUpload hidden>
+
+<ng-template #empty>
+    <img alt=""  src="../../../../assets/image/profile-placeholder.svg">
+</ng-template>
+
+<ng-template #photo let-content="content">
+    <img alt="фото" src="{{ 'data:image/jpg;base64,' + content }}">
+</ng-template>
