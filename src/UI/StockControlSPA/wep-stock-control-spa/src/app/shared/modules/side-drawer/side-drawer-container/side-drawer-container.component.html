@@ -1,0 +1,6 @@
+<mat-drawer-container [autosize]="config.autosize" [hasBackdrop]="config.hasBackdrop" class="mat-drawer-container">
+    <ng-content></ng-content>
+    <mat-drawer #drawer [class]="config.drawerclass" [mode]="config.mode" [position]="config.position" class="mat-drawer">
+        <ng-container #drawerItem></ng-container>
+    </mat-drawer>
+</mat-drawer-container>

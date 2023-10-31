@@ -1,0 +1,59 @@
+.note-input-btn {
+    display: flex;
+    width: 300px;
+    height: var(--header-input-height);
+
+    input {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    button {
+        width: 40px;
+        border-top-left-radius:0%;
+        border-bottom-left-radius:0%;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+}
+
+.filters {
+    display: flex;
+    
+    button {
+        width: 40px;
+        margin-left: 10px;
+        height: var(--header-input-height);
+    }
+}
+
+mat-card {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+    gap:10px; // для увеличения расстояния между элементами
+    overflow: hidden;
+
+    .action-list {
+        display: flex;
+        flex-direction: row;
+        margin-left: auto;
+        gap: 10px;
+    }
+}
+
+mat-card:hover {
+    background-color: #d8d8d8;
+}
+
+.pin-blue {
+    color: blue;
+}
+
+.pin-blue :hover{
+    cursor: pointer;
+    color: blue;
+}

@@ -1,0 +1,122 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content>
+    
+    <form [formGroup]="form">
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="number">Номер: </label>
+            <input 
+                id="number"
+                type="text" 
+                formControlName="number" 
+                class="form-control" 
+                placeholder="Введите номер поступления" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("number")}}</span> 
+        </div>   
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="createDate">Дата: </label>
+            <input 
+                id="createDate" 
+                type="date" 
+                formControlName="createDate" 
+                class="form-control"
+                placeholder="Введите дату поступления" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("createDate")}}</span> 
+        </div> 
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="createTime">Время: </label>
+            <input 
+                id="createTime"
+                type="time"        
+                formControlName="createTime"
+                class="form-control"
+                placeholder="Введите время поступления" required minlength="1"
+                >
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("createTime")}}</span> 
+        </div> 
+
+        <div class="mb-2">
+            <app-select-organizations
+                [isRequired]="true"
+                (changedSelect)="onChangedOrganization($event)">
+            </app-select-organizations>
+        </div>
+
+        <div class="mb-2">
+            <app-select-nomenclatures
+                [isRequired]="true"
+                (changedSelect)="onChangedNomenclature($event)">
+            </app-select-nomenclatures>
+        </div>
+
+        <div formGroupName="party">
+            <div class="was-validated info-row-fio mb-2">
+                <label for="partyNumber">Номер партии: </label>
+                <input 
+                    id="partyNumber" 
+                    type="text" 
+                    formControlName="number" 
+                    class="form-control" 
+                    placeholder="Введите номер партии" required minlength="1">
+                <span class="invalid-feedback" *ngIf="form.invalid">{{getPartyErrorMessage("number")}}</span> 
+            </div>   
+            <div class="info-row-fio mb-2">
+                <label for="partyCreateDate">Дата изготовления партии: </label>
+                <input 
+                    id="partyCreateDate" 
+                    type="date" 
+                    formControlName="createDate" 
+                    class="form-control"
+                    placeholder="Введите дату изготовления партии">
+            </div> 
+            <div class="info-row-fio mb-2">
+                <label for="partyCreateTime">Время изготовления партии: </label>
+                <input 
+                    id="partyCreateTime"
+                    type="time" 
+                    formControlName="createTime"
+                    class="form-control"
+                    placeholder="Введите время изготовления партии">
+            </div> 
+        </div>  
+
+        <div class="mb-2">
+            <app-select-warehouses
+                [isRequired]="true"
+                (changedSelect)="onChangedWarehouse($event)">
+             </app-select-warehouses>
+        </div>
+    
+        <div class="was-validated info-row-fio mb-2">
+            <label for="price">Цена: </label>
+            <input 
+                id="price" 
+                type="text" 
+                formControlName="price" 
+                class="form-control"
+                placeholder="Введите цену продукта" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("price")}}</span> 
+        </div>  
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="quantity">Количество: </label>
+            <input 
+                id="quantity" 
+                type="number" 
+                min="1"
+                formControlName="quantity" 
+                class="form-control"
+                placeholder="Введите количестов продукции" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("quantity")}}</span> 
+        </div>  
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="save()">Сохранить</button>
+</mat-dialog-actions>

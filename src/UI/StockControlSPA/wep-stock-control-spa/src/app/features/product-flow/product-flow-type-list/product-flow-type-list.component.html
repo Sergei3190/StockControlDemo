@@ -1,0 +1,46 @@
+<div class="content-side-panel">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="mat-mdc-tab-header"
+        [selectedIndex]="selectedIndex"
+        (selectedIndexChange)="onChangedSelectedIndex($event)">
+
+        <mat-tab label="Поступления">
+            <hr class="mt-0">
+        </mat-tab>
+
+        <mat-tab label="Перемещения">
+            <hr class="mt-0">
+        </mat-tab>
+
+        <mat-tab label="Списания">
+            <hr class="mt-0">
+        </mat-tab>
+    </mat-tab-group>
+
+    <div class="mat-pf-body">
+        <ng-container *ngIf="selectedIndex === 0">
+            <app-receipt-list
+                [selectedPage]="pageChanged"
+                (paginationInfoChanged)="onPaginationInfoChanged($event)"
+                [footerDisabled]="true"></app-receipt-list>
+        </ng-container>
+
+        <ng-container *ngIf="selectedIndex === 1">
+            <app-moving-list
+                [selectedPage]="pageChanged"
+                (paginationInfoChanged)="onPaginationInfoChanged($event)"
+                [footerDisabled]="true"></app-moving-list>
+        </ng-container> 
+
+        <ng-container *ngIf="selectedIndex === 2">
+            <app-write-off-list
+                [selectedPage]="pageChanged"
+                (paginationInfoChanged)="onPaginationInfoChanged($event)"
+                [footerDisabled]="true"></app-write-off-list>
+        </ng-container>
+    </div>
+
+    <div class="footer">
+        <hr/>
+        <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+    </div>
+</div>

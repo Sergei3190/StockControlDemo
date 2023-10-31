@@ -1,0 +1,42 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content [formGroup]="form">
+         
+    <div class="mb-2">
+        <app-select-parties
+            (changedSelect)="onChangedParty($event)">
+        </app-select-parties>
+    </div>
+
+    <div class="mb-2">
+        <app-select-nomenclatures
+            (changedSelect)="onChangedNomenclature($event)">
+        </app-select-nomenclatures>
+    </div>
+
+    <div class="mb-2">
+        <app-select-organizations
+            (changedSelect)="onChangedOrganization($event)">
+        </app-select-organizations>
+    </div>
+
+    <div class="mb-2">
+        <app-select-warehouses
+            [fieldName]="'Склад отправитель'"
+            (changedSelect)="onChangedSendingWarehouse($event)">
+         </app-select-warehouses>
+    </div>
+
+    <div class="mb-2">
+        <app-select-warehouses
+            [fieldName]="'Склад получатель'"
+            (changedSelect)="onChangedWarehouse($event)">
+         </app-select-warehouses>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="save()">Применить</button>
+</mat-dialog-actions>

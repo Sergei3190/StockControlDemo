@@ -1,0 +1,29 @@
+<div class="wsc-pager">
+    <div class="container">
+        <article>
+            <nav class="d-flex justify-content-evenly">
+                <button class="wsc-pager-item-navigable"
+                    id="Previous"
+                    [ngClass]="{'wsc-pager-item is-disabled': buttonStates?.previousDisabled}"
+                    (click)="onPreviousCliked($event)"
+                    aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                    Предыдущая страница
+                </button>
+
+                <span class="wsc-pager-item">
+                    Загружено элементов {{model.items}} из {{model.totalItems}} - Страница {{model.page}} - {{model.totalPages}}
+                </span>
+
+                <button class="wsc-pager-item-navigable"
+                    id="Next"
+                    [ngClass]="{'wsc-pager-item is-disabled': buttonStates?.nextDisabled}"
+                    (click)="onNextClicked($event)"
+                    aria-label="Next">
+                    Следующая страница
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </nav>
+        </article>    
+    </div>       
+</div>

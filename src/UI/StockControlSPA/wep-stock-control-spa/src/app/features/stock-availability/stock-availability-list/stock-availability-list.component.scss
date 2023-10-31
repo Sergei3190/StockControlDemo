@@ -1,0 +1,56 @@
+.title {
+    margin-top: 5px;
+    font-weight: 500;
+    font-size: initial;
+}
+
+.filters {
+    display: flex;
+    
+    button {
+        width: 40px;
+        margin-left: 10px;
+        height: var(--header-input-height);
+    }
+}
+
+.sc-table {
+
+    .mat-column-party {
+        width: 250px;
+    }
+
+    .table-header {
+        height: 28px;
+        font-size: var(--content-font-size);
+    }
+
+    .table-row {
+        font-size: var(--content-font-size);
+        height: var(--header-input-height);
+    }
+
+    .table-row:hover {
+        cursor: pointer;
+        background-color: #d8d8d8;
+    }
+}
+
+.party {
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap;
+    .party-value{
+        font-weight: 500;
+    }
+    
+    .party-discription{
+        color: gray;
+    }
+}
+
+.no-content {
+    display: flex;
+    flex-direction: row;
+    font-style: oblique;
+}

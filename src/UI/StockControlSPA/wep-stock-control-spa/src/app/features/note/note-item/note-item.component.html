@@ -1,0 +1,67 @@
+<div class="header">
+    <ng-container *ngTemplateOutlet="fix.checked ? onFix : offFix"></ng-container>
+    <span class="content" mat-dialog-title>{{title}}</span>
+    <span 
+        class="close"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="close()" 
+        (keydown)="close()" 
+        matTooltip="Закрыть" matTooltipPosition="left">
+        <i class="bi bi-box-arrow-in-right"></i>
+    </span>
+</div>
+
+<mat-dialog-content [formGroup]="form">
+
+    <mat-slide-toggle #fix formControlName="isFix" hidden />
+    
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label class="mat-label">Введите текст</mat-label>
+            <input matInput formControlName="content">
+            <button *ngIf="this.form.value.content" matSuffix mat-icon-button aria-label="Clear" (click)="clearContent()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="form.invalid">{{getErrorMessage("content")}}</mat-error>
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label class="mat-label">Выберите дату</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="executionDate">
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+        
+</mat-dialog-content>
+
+<ng-template #onFix>
+    <span 
+        class="pin-blue"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="changePinning()" 
+        (keydown)="changePinning()"
+        matTooltip="Открепить" matTooltipPosition="above">
+        <i class="bi bi-pin-fill"></i>
+    </span>
+</ng-template>
+<ng-template #offFix>
+    <span 
+        class="pin-blue" 
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="changePinning()" 
+        (keydown)="changePinning()"
+        matTooltip="Закрепить" matTooltipPosition="above">
+        <i class="bi bi-pin-angle-fill"></i>
+    </span>
+</ng-template>
+

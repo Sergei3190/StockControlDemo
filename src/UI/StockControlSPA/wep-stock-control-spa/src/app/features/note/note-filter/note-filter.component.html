@@ -1,0 +1,20 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content [formGroup]="form">
+
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label class="mat-label">Выберите дату</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="executionDate">
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+        
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="canDisabledForm" color="primary" (click)="save()">Применить</button>
+</mat-dialog-actions>

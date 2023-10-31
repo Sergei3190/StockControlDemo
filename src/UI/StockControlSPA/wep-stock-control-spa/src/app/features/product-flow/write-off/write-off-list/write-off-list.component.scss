@@ -1,0 +1,171 @@
+.pf {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .pf-header {
+        margin-top: -7px;
+    
+        &-content{      
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+    
+            .content-action {
+                display: flex;
+                gap: 10px;
+    
+                button {
+                    font-size: var(--content-font-size);
+                    width: 100px;
+                }
+            }
+            
+            .filters {
+                display: flex;
+                button {
+                    width: 40px;
+                    margin-left: 10px;
+                    height: var(--header-input-height);
+                }
+            }
+        }
+    
+        &-last-item {
+            position: relative;
+            height: 10px;
+        }
+    }
+    
+    .pf-body {
+        min-height: var(--navbar-min-height);
+        height: 100%;
+        overflow: hidden;
+    
+        .sc-table {   
+           .mat-column-select {
+                width: 40px;
+                padding: 0;
+            }
+        
+            .mat-column-number {
+                max-width: 100px;
+                min-width: 100px;
+            }
+        
+            .mat-column-createDate {
+                max-width: 100px;
+                min-width: 100px;
+            }
+        
+            .mat-column-createTime {
+                max-width: 90px;
+                min-width: 90px;
+            }
+        
+            .mat-column-nomenclature {
+                max-width: 150px;
+                min-width: 150px;
+                padding-left: 25px;
+            }
+        
+            .mat-column-party {
+                max-width: 220px;
+                min-width: 220px;
+                padding: 0;
+            }
+
+            .mat-column-sendingWarehouse {
+                max-width: 150px;
+                min-width: 150px;
+            }
+        
+            .mat-column-warehouse {
+                max-width: 150px;
+                min-width: 150px;
+                padding: 0;
+            }
+        
+            .mat-column-organization {
+                max-width: 150px;
+                min-width: 150px;
+            }
+
+            .mat-column-price {
+                max-width: 90px;
+                min-width: 90px;
+            }
+
+            .mat-column-quantity {
+                max-width: 90px;
+                min-width: 90px;
+            }
+
+            .mat-column-totalPrice {
+                max-width: 90px;
+                min-width: 90px;
+            }
+    
+            .table-header {
+                height: 28px;
+                font-size: var(--content-font-size);
+            }
+    
+            .table-row {
+                font-size: var(--content-font-size);
+                height: var(--header-input-height);
+            }
+    
+            .table-row:hover {
+                cursor: pointer;
+                background-color: #d8d8d8;
+            }
+        }
+    
+        .party {
+            display: flex;
+            gap: 5px;
+            flex-wrap: nowrap;
+            .party-value{
+                font-weight: 500;
+            }
+            
+            .party-discription{
+                color: gray;
+            }
+        }
+    
+        .no-content {
+            display: flex;
+            flex-direction: row;
+            font-style: oblique;
+        }
+    }
+    
+    .pf-footer {
+        width: 100%;
+        align-self: self-end;
+        margin-bottom: 15.5px;
+        max-height: 53.89px !important;  // чтобы не слетала разметка при уменьшении окна браузера
+        min-height: 53.89px;
+        overflow: hidden;
+    }
+    
+    .pf-footer-disabled {
+        display: none !important;
+    }
+}
+
+.action-item {
+    margin-left: 1px;
+    margin-right: 1px;
+    font-size: 14px !important;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.action-item:hover
+{
+    border-radius: 5px;
+    background-color: #d8d8d8;
+}

@@ -1,0 +1,68 @@
+<div class="content-side-panel">
+    <div class="header">
+        <div class="header-content">
+            <!-- изначально задумывалось выводить список всех полученных уведомлений, а настройку вынести в отдельную кнопку или форму, но тк 
+            время не без гранично и демонстрация вывода списка будет ещё в других формах, которые являются более важными в части демонстрации
+            других функциональностей, например того же сигнал р, то буду просто выводить настройку уведомлений -->
+            <span class="title">Настройка уведомлений</span>
+
+            <div class="filters">
+                <app-search-input [canClear]="canClearSearch" (searchChange)="onChangedSearch($event)"></app-search-input>
+
+                <button class="btn btn-primary btn-sm" type="button" [disabled]="!loadingInfo.isResultFilter"
+                    (click)="clearFilter()" matTooltip="Очистить результат фильтрации">
+                    <i class="bi bi-folder-symlink-fill"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm" type="button" (click)="openFilter()" matTooltip="Фильтр">
+                    <i class="bi bi-funnel"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="header-last-item"> 
+            <ng-container *ngTemplateOutlet="loadingInfo.isLoading ? progressBar : headerLastItem"></ng-container>
+        </div>
+    </div>
+
+    <div class="body" #container app-side-drawer-container>
+        <ng-container *ngIf="!loadingInfo.isNoContent && items?.length === 0">
+            <span class="no-content">Настройки уведомлений отсутствуют.. :-0</span>
+        </ng-container>  
+        <ng-container *ngIf="!loadingInfo.isNoContent && items && items.length > 0">
+            <mat-card *ngFor="let item of items">
+                <span>{{item.notificationType.name}}</span>
+                <div class="action-list">
+                    <mat-slide-toggle [matTooltip]="item.enable ? 'Отключить' : 'Включить'" matTooltipPosition="left" 
+                        [(ngModel)]="item.enable"
+                        (click)="updateItem(item)"></mat-slide-toggle>
+                </div>
+            </mat-card>
+        </ng-container>      
+        <ng-container *ngIf="loadingInfo.isNoContent">
+            <app-page-no-content [load]="reload"></app-page-no-content>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isNotFound">
+            <app-page-not-found [load]="reload"></app-page-not-found>
+        </ng-container>
+        <ng-container *ngIf="loadingInfo.isUnauthorized">
+            <app-page-unauthorized></app-page-unauthorized>
+        </ng-container>
+    </div>
+    
+   <div class="footer">
+      <hr/>
+      <app-pagination [model]="paginationInfo" (changed)="onPageChanged($event)"></app-pagination>
+   </div>
+</div>
+
+<ng-template #progressBar>
+    <!-- неопределйнная загрузка -->
+    <mat-progress-bar class="mt-1" mode="indeterminate"></mat-progress-bar>
+    <!-- детерменированная загрузка determinate -->
+    <!-- <mat-progress-bar class="mt-1" mode="determinate" [value]="progressValue"  [bufferValue]="progressValue"></mat-progress-bar> -->
+</ng-template>
+<ng-template #headerLastItem>
+    <hr class="mt-1">
+</ng-template>

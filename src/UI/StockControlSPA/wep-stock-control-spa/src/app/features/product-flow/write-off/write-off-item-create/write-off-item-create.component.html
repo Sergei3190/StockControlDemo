@@ -1,0 +1,120 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content>
+    
+    <form [formGroup]="form">
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="number">Номер: </label>
+            <input 
+                id="number"
+                type="text" 
+                formControlName="number" 
+                class="form-control" 
+                placeholder="Введите номер списания" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("number")}}</span> 
+        </div>   
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="createDate">Дата: </label>
+            <input 
+                id="createDate" 
+                type="date" 
+                formControlName="createDate" 
+                class="form-control"
+                placeholder="Введите дату списания" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("createDate")}}</span> 
+        </div> 
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="createTime">Время: </label>
+            <input 
+                id="createTime"
+                type="time"        
+                formControlName="createTime"
+                class="form-control"
+                placeholder="Введите время списания" required minlength="1"
+                >
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("createTime")}}</span> 
+        </div> 
+
+        <div class="mb-2">
+            <app-select-organizations
+                [params]=" organizationFilterParams"
+                [isRequired]="true"
+                (changedSelect)="onChangedOrganization($event)">
+            </app-select-organizations>
+        </div>
+
+        <div class="mb-2">
+            <app-select-nomenclatures
+                [params]="nomenclatureFilterParams"
+                [isRequired]="true"
+                (changedSelect)="onChangedNomenclature($event)">
+            </app-select-nomenclatures>
+        </div>
+
+        <div class="mb-2">
+            <app-select-parties
+                [params]="partyFilterParams"
+                [isRequired]="true"
+                (changedSelect)="onChangedParty($event)">
+             </app-select-parties>
+        </div>
+
+        <div class="mb-2">
+            <app-select-warehouses
+                [fieldName]="'Склад отправитель'"
+                [params]="warehouseFilterParams"
+                [isRequired]="true"
+                (changedSelect)="onChangedSendingWarehouse($event)">
+             </app-select-warehouses>
+        </div>
+
+        <div class="mb-2">
+            <app-select-warehouses
+                [fieldName]="'Склад получатель'"
+                [isRequired]="true"
+                (changedSelect)="onChangedWarehouse($event)">
+             </app-select-warehouses>
+        </div>
+    
+        <div class="was-validated info-row-fio mb-2">
+            <label for="price">Цена: </label>
+            <input 
+                id="price" 
+                type="text" 
+                formControlName="price" 
+                class="form-control"
+                placeholder="Введите цену продукта" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("price")}}</span> 
+        </div>  
+
+        <div class="was-validated info-row-fio mb-2">
+            <label for="quantity">Количество: </label>
+            <input 
+                id="quantity" 
+                type="number" 
+                formControlName="quantity" 
+                class="form-control"
+                placeholder="Введите количестов продукции" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("quantity")}}</span> 
+        </div>  
+
+        <div class="info-row-fio mb-2">
+            <label for="reason">Причина списания: </label>
+            <input 
+                id="reason" 
+                type="text" 
+                formControlName="reason" 
+                class="form-control"
+                placeholder="Введите причину списания">
+        </div>  
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="save()">Сохранить</button>
+</mat-dialog-actions>

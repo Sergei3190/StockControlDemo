@@ -1,0 +1,18 @@
+<h5 mat-dialog-title>{{title}}</h5>
+
+<mat-dialog-content>
+    
+    <form [formGroup]="form">
+        <div class="was-validated info-row-fio mb-2">
+            <label for="name">Наименование: </label>
+            <input id="name" type="text" formControlName="name" class="form-control" placeholder="Введите название организации" required minlength="1">
+            <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("name")}}</span> 
+        </div>   
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+    <button mat-raised-button (click)="close()">Отменить</button>
+    <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="save()">Сохранить</button>
+</mat-dialog-actions>

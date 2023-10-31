@@ -1,0 +1,17 @@
+.mat-drawer-container {
+    height: 100%;
+    background-color: white;
+
+    .modal-sm {
+        width: 270px !important;
+    }
+
+    .modal-lg {
+        width: 470px !important;
+    }
+
+    .mat-drawer {
+        padding-left: 10px;
+        padding-top: 4px;
+    }
+}

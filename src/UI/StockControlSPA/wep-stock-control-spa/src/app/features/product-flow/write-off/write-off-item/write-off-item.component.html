@@ -1,0 +1,146 @@
+<div class="header">
+    <span class="content" mat-dialog-title>{{title}}</span>
+    <span 
+        class="close"
+        role="button"
+        tabindex="0"
+        aria-pressed="false"
+        (click)="close()" 
+        (keydown)="close()" 
+        matTooltip="Закрыть" matTooltipPosition="left">
+        <i class="bi bi-box-arrow-in-right"></i>
+    </span>
+</div>
+
+<form [formGroup]="form">
+
+    <div class="was-validated info-row-fio mb-2">
+        <label for="number">Номер: </label>
+        <input 
+            id="number"
+            type="text" 
+            formControlName="number" 
+            class="form-control" 
+            placeholder="Введите номер списания" required minlength="1">
+        <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("number")}}</span> 
+    </div>   
+
+    <div class="info-row-fio mb-2">
+        <label for="createDate">Дата: </label>
+        <input 
+            id="createDate" 
+            type="date" 
+            formControlName="createDate" 
+            class="form-control"
+            placeholder="Введите дату списания">
+    </div> 
+
+    <div class="info-row-fio mb-2">
+        <label for="createTime">Время: </label>
+        <input 
+            id="createTime"
+            type="time"        
+            formControlName="createTime"
+            class="form-control"
+            placeholder="Введите время списания">
+    </div> 
+
+    <div class="mb-2">
+        <app-select-nomenclatures
+            [disabled]="this.form.get('nomenclature')?.disabled ?? true"
+            [name]="this.form.get('nomenclature')?.value?.name">
+        </app-select-nomenclatures>
+    </div>
+
+    <div formGroupName="party">
+        <div class="info-row-fio mb-2">
+            <label for="partyNumber">Номер партии: </label>
+            <input 
+                id="partyNumber" 
+                type="text" 
+                formControlName="number" 
+                class="form-control" 
+                placeholder="Введите номер партии" required minlength="1">
+        </div> 
+        <div class="info-row-fio mb-2">
+            <label for="extensionNumber">Номер партии склада хранения: </label>
+            <input id="extensionNumber" type="text" formControlName="extensionNumber" class="form-control">
+        </div>   
+        <div class="info-row-fio mb-2">
+            <label for="partyCreateDate">Дата изготовления партии: </label>
+            <input 
+                id="partyCreateDate" 
+                type="date" 
+                formControlName="createDate" 
+                class="form-control"
+                placeholder="Введите дату изготовления партии">
+        </div> 
+        <div class="info-row-fio mb-2">
+            <label for="partyCreateTime">Время изготовления партии: </label>
+            <input 
+                id="partyCreateTime"
+                type="time" 
+                formControlName="createTime"
+                class="form-control"
+                placeholder="Введите время изготовления партии">
+        </div> 
+    </div>  
+
+    <div class="mb-2">
+        <app-select-warehouses
+            [disabled]="this.form.get('sendingWarehouse')?.disabled ?? true"
+            [fieldName]="'Склад отправитель'"
+            [name]="this.form.get('sendingWarehouse')?.value?.name">
+         </app-select-warehouses>
+    </div>
+
+    <div class="mb-2">
+        <app-select-warehouses
+            [disabled]="this.form.get('warehouse')?.disabled ?? true"
+            [fieldName]="'Склад получатель'"
+            [name]="this.form.get('warehouse')?.value?.name">
+         </app-select-warehouses>
+    </div>
+
+    <div class="mb-2">
+        <app-select-organizations
+            [disabled]="this.form.get('organization')?.disabled ?? true"
+            [name]="this.form.get('organization')?.value?.name">
+        </app-select-organizations>
+    </div>
+
+    <div class="was-validated info-row-fio mb-2">
+        <label for="price">Цена: </label>
+        <input 
+            id="price" 
+            type="text" 
+            formControlName="price" 
+            class="form-control"
+            placeholder="Введите цену продукта" required minlength="1">
+        <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("price")}}</span> 
+    </div>  
+
+    <div class="was-validated info-row-fio mb-2">
+        <label for="quantity">Количество: </label>
+        <input 
+            id="quantity" 
+            min="1"
+            type="number" 
+            formControlName="quantity" 
+            class="form-control"
+            placeholder="Введите количестов продукции" required minlength="1">
+        <span class="invalid-feedback" *ngIf="form.invalid">{{getErrorMessage("quantity")}}</span> 
+    </div>  
+
+    <div class="info-row-fio mb-2">
+        <label for="reason">Причина списания: </label>
+        <input 
+            id="reason" 
+            type="text" 
+            formControlName="reason" 
+            class="form-control"
+            placeholder="Введите причину списания">
+    </div>  
+</form>
+
+
